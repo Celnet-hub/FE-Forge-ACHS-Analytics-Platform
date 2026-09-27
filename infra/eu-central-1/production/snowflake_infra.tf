@@ -1,4 +1,3 @@
-# Create the core Database
 resource "snowflake_database" "achs_analytics" {
   name    = "ACHS_ANALYTICS"
   comment = "Single Source of Truth for ACHS BI"
@@ -11,14 +10,14 @@ resource "snowflake_schema" "staging" {
   comment  = "Raw data landing zone for nested JSON objects"
 }
 
-# Create the Silver layer for flattened, cleaned data
+
 resource "snowflake_schema" "silver" {
   database = snowflake_database.achs_analytics.name
   name     = "SILVER"
   comment  = "Cleaned and standardized healthcare entities"
 }
 
-# Create the Gold layer for final BI consumption
+
 resource "snowflake_schema" "gold" {
   database = snowflake_database.achs_analytics.name
   name     = "GOLD"

@@ -8,8 +8,6 @@ resource "snowflake_storage_integration_aws" "achs_s3_integration" {
   storage_allowed_locations = ["s3://ach-data-project/"]
 }
 
-
-# Create the JSON File Format for the raw data
 resource "snowflake_file_format_json" "json_format" {
   name              = "ACHS_JSON_FORMAT"
   database          = snowflake_database.achs_analytics.name
@@ -17,7 +15,6 @@ resource "snowflake_file_format_json" "json_format" {
   strip_outer_array = true
 }
 
-# Create the External Stage
 resource "snowflake_stage_external_s3" "achs_s3_stage" {
   name                = "ACHS_RAW_DATA_STAGE"
   database            = snowflake_database.achs_analytics.name
