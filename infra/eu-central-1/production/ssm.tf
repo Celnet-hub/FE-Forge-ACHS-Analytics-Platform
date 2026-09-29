@@ -9,7 +9,7 @@ resource "aws_ssm_parameter" "snowflake_airflow_private_key" {
 resource "aws_ssm_parameter" "snowflake_ecs_dbt_private_key" {
   name        = "/snowflake/ecs_dbt/private-key"
   type        = "SecureString"
-  value       = tls_private_key.ecs_dbt_key.private_key_pem
+  value       = tls_private_key.ecs_dbt_key.private_key_pem_pkcs8
   description = "Snowflake private key for ECS dbt"
   key_id      = "alias/aws/ssm"
 }
