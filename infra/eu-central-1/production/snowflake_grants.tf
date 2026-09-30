@@ -25,14 +25,14 @@ resource "snowflake_grant_privileges_to_account_role" "grant_usage_achs_analytic
 # Grant usage on the staging schema
 resource "snowflake_grant_privileges_to_account_role" "grant_usage_staging_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["USAGE", "CREATE TABLE", "CREATE VIEW", "CREATE STAGE", "CREATE FILE FORMAT"]
+  privileges        = ["USAGE"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema {
     schema_name = snowflake_schema.staging.fully_qualified_name
   }
 }
 
-# Grant select on all tables in the staging schema
+# Grant select on all and future tables in the staging schema
 resource "snowflake_grant_privileges_to_account_role" "grant_select_on_staging_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
   privileges        = ["SELECT"]
@@ -45,21 +45,33 @@ resource "snowflake_grant_privileges_to_account_role" "grant_select_on_staging_s
   }
 }
 
+resource "snowflake_grant_privileges_to_account_role" "grant_select_on_future_staging_tables_to_ecs_dbt_role" {
+  provider          = snowflake.useradmin
+  privileges        = ["SELECT"]
+  account_role_name = snowflake_account_role.ecs_dbt_role.name
+  on_schema_object {
+    future {
+      object_type_plural = "TABLES"
+      in_schema          = snowflake_schema.staging.fully_qualified_name
+    }
+  }
+}
+
 
 # Grant usage on the silver schema
 resource "snowflake_grant_privileges_to_account_role" "grant_usage_silver_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["USAGE", "CREATE TABLE", "CREATE VIEW"]
+  privileges        = ["USAGE", "CREATE TABLE"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema {
     schema_name = snowflake_schema.silver.fully_qualified_name
   }
 }
 
-# Grant select on all tables in the silver schema
+# Grant select and insert on all and future tables in the silver schema
 resource "snowflake_grant_privileges_to_account_role" "grant_select_on_silver_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["SELECT"]
+  privileges        = ["SELECT", "INSERT"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema_object {
     all {
@@ -69,23 +81,47 @@ resource "snowflake_grant_privileges_to_account_role" "grant_select_on_silver_sc
   }
 }
 
+resource "snowflake_grant_privileges_to_account_role" "grant_select_insert_on_future_silver_tables_to_ecs_dbt_role" {
+  provider          = snowflake.useradmin
+  privileges        = ["SELECT", "INSERT"]
+  account_role_name = snowflake_account_role.ecs_dbt_role.name
+  on_schema_object {
+    future {
+      object_type_plural = "TABLES"
+      in_schema          = snowflake_schema.silver.fully_qualified_name
+    }
+  }
+}
+
 # Grant usage on the gold schema
 resource "snowflake_grant_privileges_to_account_role" "grant_usage_gold_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["USAGE", "CREATE TABLE", "CREATE VIEW"]
+  privileges        = ["USAGE"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema {
     schema_name = snowflake_schema.gold.fully_qualified_name
   }
 }
 
-# Grant select on all tables in the gold schema
+# Grant select and insert on all and future tables in the gold schema
 resource "snowflake_grant_privileges_to_account_role" "grant_select_on_gold_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["SELECT"]
+  privileges        = ["SELECT", "INSERT"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema_object {
     all {
+      object_type_plural = "TABLES"
+      in_schema          = snowflake_schema.gold.fully_qualified_name
+    }
+  }
+}
+
+resource "snowflake_grant_privileges_to_account_role" "grant_select_insert_on_future_gold_tables_to_ecs_dbt_role" {
+  provider          = snowflake.useradmin
+  privileges        = ["SELECT", "INSERT"]
+  account_role_name = snowflake_account_role.ecs_dbt_role.name
+  on_schema_object {
+    future {
       object_type_plural = "TABLES"
       in_schema          = snowflake_schema.gold.fully_qualified_name
     }
