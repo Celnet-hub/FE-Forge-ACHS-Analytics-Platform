@@ -1,0 +1,24 @@
+name: achs_dbt_project
+
+profile: achs_dbt_project
+
+seed-paths: ["seeds"]
+model-paths: ["models"]
+macro-paths: ["macros"]
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# seeds:
+#   # Builds seeds into '<your_schema_name>_raw'
+#   achs_dbt_project:
+#     +schema: raw
+
+models:
+  achs_dbt_project:
+    +static_analysis: strict
+    silver_layer:
+      +materialized: view
+      +schema: SILVER
+    # marts:
+    #   +materialized: table
