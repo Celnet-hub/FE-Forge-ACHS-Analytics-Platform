@@ -1,5 +1,6 @@
 {{ config(
     materialized='table',
+    schema='gold',
     cluster_by=['processed_date', 'payer_id'] 
 ) }}
 
@@ -27,7 +28,10 @@ fact_claims AS (
         c.amount_paid_by_insurance,
         c.patient_responsibility_amount,
         c.claim_status,
-        TO_VARCHAR(c.loaded_at, 'YYYYMMDD')::NUMBER AS processed_date
+        c.denial_reason,
+        c.reimbursement_rate,
+        c.processed_date,
+        TO_VARCHAR(c.processed_date, 'YYYYMMDD')::NUMBER AS numeric_processed_date
         
     FROM silver_claims c
     LEFT JOIN silver_encounters e 
