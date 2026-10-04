@@ -1,0 +1,14 @@
+achs_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      threads: 16
+      authenticator: username_password_mfa
+      account: FNCWXVE-UU56570
+      user: ECS_DBT_USER
+      database: ACHS_ANALYTICS
+      warehouse: ACHS_DBT_WH
+      schema: STAGING
+      role: ECS_DBT_ROLE
+      private_key: "{{ env_var('private_key') }}"
