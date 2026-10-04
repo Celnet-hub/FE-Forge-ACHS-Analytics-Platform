@@ -96,7 +96,7 @@ resource "snowflake_grant_privileges_to_account_role" "grant_select_insert_on_fu
 # Grant usage on the gold schema
 resource "snowflake_grant_privileges_to_account_role" "grant_usage_gold_schema_to_ecs_dbt_role" {
   provider          = snowflake.useradmin
-  privileges        = ["USAGE"]
+  privileges        = ["USAGE", "CREATE TABLE"]
   account_role_name = snowflake_account_role.ecs_dbt_role.name
   on_schema {
     schema_name = snowflake_schema.gold.fully_qualified_name

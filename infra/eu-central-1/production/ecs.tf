@@ -2,6 +2,11 @@ resource "aws_ecs_cluster" "dbt_cluster" {
   name = "achs-data-cluster"
 }
 
+resource "aws_cloudwatch_log_group" "dbt" {
+  name              = "/ecs/achs-dbt"
+  retention_in_days = 30
+}
+
 # IAM Role for ECS Task Execution (Allows ECS to pull from ECR and read SSM)
 resource "aws_iam_role" "ecs_execution_role" {
   name = "achs_ecs_execution_role"
@@ -65,10 +70,9 @@ resource "aws_ecs_task_definition" "dbt_task" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          "awslogs-group"         = "/ecs/achs-dbt"
+          "awslogs-group"         = aws_cloudwatch_log_group.dbt.name
           "awslogs-region"        = "eu-central-1"
           "awslogs-stream-prefix" = "dbt"
-          "awslogs-create-group"  = "true"
         }
       }
     }
