@@ -1,6 +1,9 @@
 name: DBT ECR CI/CD
 
 on:
+  pull_request:
+    paths:
+      - 'dbt_project/achs_dbt_project/**'
   push:
     branches:
       - main
