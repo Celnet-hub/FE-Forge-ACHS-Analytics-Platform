@@ -3,12 +3,12 @@ name: Terraform CI/CD
 on:
   pull_request:
     paths:
-      - 'infra/eu-central-1/production/**.tf'
+      - 'infra/eu-central-1/'
   push:
     branches:
       - main
     paths:
-      - 'infra/eu-central-1/production/**.tf'
+      - 'infra/eu-central-1/'
 # REQUIRED: Grant GitHub permission to mint the OIDC token
 permissions:
   id-token: write 
