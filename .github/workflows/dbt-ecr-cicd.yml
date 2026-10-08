@@ -2,13 +2,13 @@ name: DBT ECR CI/CD
 
 on:
   pull_request:
-    paths:
-      - 'dbt_project/achs_dbt_project/**'
+    # paths:
+    #   - 'dbt_project/achs_dbt_project/**'
   push:
     branches:
       - main
-    paths:
-      - 'dbt_project/achs_dbt_project/**'
+    # paths:
+    #   - 'dbt_project/achs_dbt_project/**'
 
 permissions:
   id-token: write
