@@ -1,0 +1,55 @@
+name: DBT ECR CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dbt_project/achs_dbt_project/**'
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  checks: read
+
+
+jobs:
+  build-and-push:
+    name: Build dbt image and push to aws ECR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for Terraform to complete provisioning
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{github.sha}}
+          check-name: 'Provision Infrastructure on AWS and SNOWFLAKE'
+          repo-token: ${{secrets.GITHUB_TOKEN}}
+          wait-interval: 10
+          allowed-conclusions: success, skipped
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::206617159067:role/achs-github-actions-role
+          aws-region: eu-central-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: achs-dbt
+          IMAGE_TAG: ${{ github.sha }}
+        working-directory: ./dbt_project/achs_dbt_project
+        run: |
+          # Build the Docker image
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          
+          # Push the image to AWS ECR
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
