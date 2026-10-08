@@ -19,12 +19,11 @@ resource "aws_iam_role" "github_actions_role" {
         Condition = {
           StringEquals = {
             # STRICT SECURITY - Only allow specific repository to assume this role
-            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com",
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          }
+          StringLike = {
             "token.actions.githubusercontent.com:sub" : "repo:Celnet-hub/FE-Forge-ACHS-Analytics-Platform:*"
           }
-          # StringLike = {
-          #   "token.actions.githubusercontent.com:sub" : "repo:Celnet-hub/FE-Forge-ACHS-Analytics-Platform:*"
-          # }
         }
       }
     ]
