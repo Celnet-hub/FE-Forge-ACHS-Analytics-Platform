@@ -22,9 +22,7 @@ resource "aws_iam_role" "github_actions_role" {
             "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com",
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" : [
-              "repo:Celnet-hub@55122878/FE-Forge-ACHS-Analytics-Platform@1409818033:ref:refs/heads/main"
-            ]
+            "token.actions.githubusercontent.com:sub" : "repo:Celnet-hub@55122878/FE-Forge-ACHS-Analytics-Platform@1409818033:ref:refs/heads/main"
           }
         }
       }
