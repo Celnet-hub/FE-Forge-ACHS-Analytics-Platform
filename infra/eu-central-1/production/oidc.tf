@@ -23,8 +23,7 @@ resource "aws_iam_role" "github_actions_role" {
           }
           StringLike = {
             "token.actions.githubusercontent.com:sub" : [
-              "repo:Celnet-hub@55122878/FE-Forge-ACHS-Analytics-Platform@1409818033:ref:refs/heads/main",
-              "repo:Celnet-hub@55122878/FE-Forge-ACHS-Analytics-Platform@1409818033:environment:SNOWFLAKE_ACCOUNT"
+              "repo:Celnet-hub@55122878/FE-Forge-ACHS-Analytics-Platform@1409818033:ref:refs/heads/main"
             ]
           }
         }
