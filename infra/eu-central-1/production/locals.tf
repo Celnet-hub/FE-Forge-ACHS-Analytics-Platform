@@ -6,9 +6,8 @@ locals {
   }
 
   snowflake_tags = {
-    organization     = "fncwxve"
-    account          = "uu56570"
-    private_key_path = "terraform_key.p8"
+    organization = "fncwxve"
+    account      = "uu56570"
   }
 }
 

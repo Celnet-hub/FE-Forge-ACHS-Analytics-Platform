@@ -20,7 +20,7 @@ provider "snowflake" {
   user              = "TERRAFORM_SVC"
   role              = "SYSADMIN"
   authenticator     = "SNOWFLAKE_JWT"
-  private_key       = file(local.snowflake_tags.private_key_path)
+  # private key is read from the SNOWFLAKE_PRIVATE_KEY env var
 }
 
 # will be used to manage Snowflake users and roles via the USERADMIN role
@@ -31,5 +31,4 @@ provider "snowflake" {
   role              = "USERADMIN"
   alias             = "useradmin"
   authenticator     = "SNOWFLAKE_JWT"
-  private_key       = file(local.snowflake_tags.private_key_path)
 }
