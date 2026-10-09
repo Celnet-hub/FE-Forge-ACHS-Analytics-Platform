@@ -20,7 +20,7 @@ provider "snowflake" {
   user              = "TERRAFORM_SVC"
   role              = "SYSADMIN"
   authenticator     = "SNOWFLAKE_JWT"
-  # private key is read from the SNOWFLAKE_PRIVATE_KEY env var
+  private_key       = var.snowflake_private_key
 }
 
 # will be used to manage Snowflake users and roles via the USERADMIN role
@@ -31,4 +31,5 @@ provider "snowflake" {
   role              = "USERADMIN"
   alias             = "useradmin"
   authenticator     = "SNOWFLAKE_JWT"
+  private_key       = var.snowflake_private_key
 }

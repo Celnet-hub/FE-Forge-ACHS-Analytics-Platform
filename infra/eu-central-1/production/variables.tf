@@ -21,3 +21,9 @@ variable "project" {
   type        = string
   default     = "Federated-Engineers"
 }
+
+variable "snowflake_private_key" {
+  description = "PEM private key for the TERRAFORM_SVC Snowflake user"
+  type        = string
+  sensitive   = true
+}

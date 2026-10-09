@@ -103,3 +103,26 @@ resource "aws_iam_role_policy_attachment" "attach_tf_state" {
   role       = aws_iam_role.github_actions_role.name
   policy_arn = aws_iam_policy.github_tf_state_policy.arn
 }
+
+
+# POLICY 3 - Manage the AWS resources defined in this configuration
+resource "aws_iam_policy" "github_tf_manage_policy" {
+  name        = "achs_github_tf_manage"
+  description = "Allows GitHub Actions to plan/apply the ECR, ECS, CloudWatch, SSM and IAM resources in this stack"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["ecr:*", "ecs:*", "logs:*", "ssm:*", "iam:*"]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_tf_manage" {
+  role       = aws_iam_role.github_actions_role.name
+  policy_arn = aws_iam_policy.github_tf_manage_policy.arn
+}
