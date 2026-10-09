@@ -24,7 +24,6 @@ jobs:
   terraform:
     name: Provision Infrastructure on AWS and SNOWFLAKE
     runs-on: ubuntu-latest
-    environment: SNOWFLAKE_ACCOUNT
     defaults:
       run:
         working-directory: ./infra/eu-central-1/production
