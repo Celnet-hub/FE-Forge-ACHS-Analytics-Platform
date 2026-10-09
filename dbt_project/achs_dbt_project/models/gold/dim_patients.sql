@@ -21,4 +21,5 @@ dim_patients AS (
     FROM silver_patients
 )
 
+-- select tables
 SELECT * FROM dim_patients
